@@ -165,6 +165,7 @@ var Pontoon = (function (my) {
    */
   function renderTextareaElement(id, value, maxlength) {
     var element = '<textarea class="value" id="ftl-id-' + id + '"' + ' maxlength="' + maxlength + '"';
+    if (id === 'id' || id === 'type') element += ' disabled';
 
     element += ' dir="' + Pontoon.locale.direction +
       '" data-script="' + Pontoon.locale.script +
@@ -390,7 +391,7 @@ var Pontoon = (function (my) {
     elements.forEach(function (element) {
       if (element.type === 'TextElement') {
         if (markPlaceables) {
-          string += Pontoon.markXMLTags(element.value);
+          string += Pontoon.markAdditionalTags(element.value);
         }
         else {
           string += element.value;
@@ -427,6 +428,7 @@ var Pontoon = (function (my) {
     var entity = Pontoon.getEditorEntity();
     var show = entity.format !== 'ftl' || !Pontoon.fluent.isComplexFTL();
 
+    // TODO Change toggling rule to support copy from value and attributes
     $('#translation-length, #copy').toggle(show);
 
     if ($('#translation-length').is(':visible')) {

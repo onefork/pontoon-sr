@@ -3123,6 +3123,12 @@ var Pontoon = (function (my) {
           }
           return false;
         }
+
+        // Ctrl + K: Copy from source
+        if (e.ctrlKey && key === 73) {
+          $('#copy').click();
+          return false;
+        }
       };
       $('html').on('keydown', traversalShortcutsHandler);
 

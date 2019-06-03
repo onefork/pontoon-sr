@@ -148,19 +148,24 @@ var Pontoon = (function (my) {
     },
 
     /*
-     * Markup XML Tags
+     * Markup XML Tags and SR Mark Codes
      *
-     * Find any XML Tags in a string and mark them up, while making sure
-     * the rest of the text in a string is displayed not rendered.
+     * Find any Markup XML Tags and SR Mark Codes in a string and mark them up,
+     * while making sure the rest of the text in a string is displayed not
+     * rendered.
      */
-    markXMLTags: function (string) {
+    markAdditionalTags: function (string) {
       var self = this;
 
       var markedString = '';
       var startMarker = '<mark class="placeable" title="XML Tag">';
       var endMarker = '</mark>';
+      var startMarkerSR = '<mark class="placeable" title="SR Tag">';
+      var endMarkerSR = '</mark>';
 
-      var re = /(<[^(><.)]+>)/gi;
+      // var re = /(<[^(><.)]+>)/gi;
+      var re = /(<[^(><.)]+>)|(\[\[[^(><\]\[.)]+]])/gi;
+
       var results;
       var previousIndex = 0;
 
@@ -170,6 +175,49 @@ var Pontoon = (function (my) {
 
       // Find successive matches
       while ((results = re.exec(string)) !== null) {
+        // XML Tag - results[1] !== undefined
+        // SR Mark Code - results[2] !== undefined
+        if (results[2] !== undefined) { // SR Mark Code
+          startMarker = startMarkerSR;
+          endMarker = endMarkerSR;
+
+          switch (results[2]) {
+            case '[[h]]':
+              startMarker = '<mark class="placeable" title="Heading">';
+              break;
+            case '[[/h]]':
+              startMarker = '<mark class="placeable" title="Heading">';
+              break;
+            case '[[i]]':
+              startMarker = '<mark class="placeable" title="Italic">';
+              endMarker += '<i>';
+              break;
+            case '[[/i]]':
+              startMarker = '</i><mark class="placeable" title="Italic">';
+              break;
+            case '[[b]]':
+              startMarker = '<mark class="placeable" title="Bold">';
+              endMarker += '<b>';
+              break;
+            case '[[/b]]':
+              startMarker = '</b><mark class="placeable" title="Bold">';
+              break;
+            case '[[u]]':
+              startMarker = '<mark class="placeable" title="Underline">';
+              endMarker += '<u>';
+              break;
+            case '[[/u]]':
+              startMarker = '</u><mark class="placeable" title="Underline">';
+              break;
+            case '[[br]]':
+              startMarker = '<mark class="placeable" title="New Line">';
+              // endMarker += '<br>';
+              break;
+            default:
+            //
+          }
+        }
+
         markedString += (
           // Substring between the previous and the current tag: do not render
           doNotRenderSubstring(previousIndex, results.index) +
