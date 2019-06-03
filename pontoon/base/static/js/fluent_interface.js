@@ -165,6 +165,7 @@ var Pontoon = (function (my) {
    */
   function renderTextareaElement(id, value, maxlength) {
     var element = '<textarea class="value" id="ftl-id-' + id + '"' + ' maxlength="' + maxlength + '"';
+    if (id === 'id' || id === 'type') element += ' disabled';
 
     element += ' dir="' + Pontoon.locale.direction +
       '" data-script="' + Pontoon.locale.script +
