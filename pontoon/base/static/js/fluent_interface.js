@@ -390,7 +390,7 @@ var Pontoon = (function (my) {
     elements.forEach(function (element) {
       if (element.type === 'TextElement') {
         if (markPlaceables) {
-          string += Pontoon.markXMLTags(element.value);
+          string += Pontoon.markAdditionalTags(element.value);
         }
         else {
           string += element.value;
