@@ -428,6 +428,7 @@ var Pontoon = (function (my) {
     var entity = Pontoon.getEditorEntity();
     var show = entity.format !== 'ftl' || !Pontoon.fluent.isComplexFTL();
 
+    // TODO Change toggling rule to support copy from value and attributes
     $('#translation-length, #copy').toggle(show);
 
     if ($('#translation-length').is(':visible')) {
